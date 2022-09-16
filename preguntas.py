@@ -11,19 +11,21 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+with open("data.csv", "r") as file:
+    data= file.readlines()
+
+data1 = [row.replace("\t", ";") for row in data]
+data1 = [row.replace("\n", "") for row in data1]
+data1 = [row.split(";") for row in data1]
 
 
 def pregunta_01():
-    
-    
-    """
-    Retorne la suma de la segunda columna.
 
-    Rta/
-    214
+    row_2=[]
+    for i in range(len(data1)):
+        row_2.append(int(data1[i][1]))
 
-    """
-    return 666
+    return(sum(row_2))
 
 
 def pregunta_02():
