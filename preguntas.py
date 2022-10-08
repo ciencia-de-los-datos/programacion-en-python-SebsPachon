@@ -11,6 +11,10 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+from calendar import LocaleHTMLCalendar
+from re import I
+
+
 with open("data.csv", "r") as file:
     data= file.readlines()
 
@@ -20,13 +24,8 @@ data1 = [row.split(";") for row in data1]
 
 
 def pregunta_01():
-
-    row_2=[]
-    for i in range(len(data1)):
-        row_2.append(int(data1[i][1]))
-
+    row_2=[int(data1[i][1]) for i in range(len(data1))]
     return(sum(row_2))
-
 
 def pregunta_02():
     """
@@ -43,7 +42,9 @@ def pregunta_02():
     ]
 
     """
-    return 211
+    letras=tuple([data1[i][0] for i in range(len(data1))])
+    l=[(i,letras.count(i)) for i in (set(letras))]
+    return(sorted(l))
 
 
 def pregunta_03():
@@ -61,9 +62,14 @@ def pregunta_03():
     ]
 
     """
-    return 888
+    values = tuple(map(lambda x:x[0:2],data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],data1))): 
+        z=[values[i][:] for i in range(len(data1)) if values[i][0]==x]
+        w=(x,sum(int(z[i][1]) for i in range(len(z))))
+        l.append(w)
 
-
+    return (l)
 def pregunta_04():
     """
     La columna 3 contiene una fecha en formato `YYYY-MM-DD`. Retorne la cantidad de
@@ -86,8 +92,15 @@ def pregunta_04():
     ]
 
     """
-    return 888
-
+    l=[]
+    fechas=list([data1[i][2] for i in range(len(data1))])
+    values= [fechas.split("-") for fechas in fechas]
+    months=tuple(map(lambda x:x[1],values))
+    key=sorted(set(months))
+    for i in range (len(key)):
+        w=(key[i],months.count(key[i]))
+        l.append(w)
+    return(l)
 
 def pregunta_05():
     """
@@ -104,7 +117,13 @@ def pregunta_05():
     ]
 
     """
-    return 1000
+    values = tuple(map(lambda x:x[0:2],data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],data1))): 
+        z=[values[i][:] for i in range(len(data1)) if values[i][0]==x]
+        w=(x,max(int(z[i][1]) for i in range(len(z))),min(int(z[i][1]) for i in range(len(z))))
+        l.append(w)
+    return (l)
 
 
 def pregunta_06():
@@ -129,6 +148,19 @@ def pregunta_06():
     ]
 
     """
+    values = list(map(lambda x:(x[4]),data1))
+    items=list(map(lambda x:(x.split(',')),values))
+    splited=list(map(lambda x: dict(x[i].split(':') for i in range (len(x))),items))
+    for i in range(len(splited)):
+        splited[i]=dict(zip(list(splited[i].keys()),list(map(int,splited[i].values()))))
+
+    res = {}
+
+
+    for ele in splited:      
+        key, val = tuple(ele.items())     
+        res[key].append(val) 
+    res
     return 200
 
 
@@ -262,3 +294,4 @@ def pregunta_12():
 
     """
     return 13912038219038
+
