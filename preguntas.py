@@ -11,10 +11,6 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
-from calendar import LocaleHTMLCalendar
-from re import I
-
-
 with open("data.csv", "r") as file:
     data= file.readlines()
 
@@ -141,7 +137,7 @@ def pregunta_06():
         ("ddd", 0, 9),
         ("eee", 1, 7),
         ("fff", 0, 9),
-        ("ggg", 3, 10),
+           ("ggg", 3, 10),
         ("hhh", 0, 9),
         ("iii", 0, 9),
         ("jjj", 5, 17),
@@ -149,20 +145,16 @@ def pregunta_06():
 
     """
     values = list(map(lambda x:(x[4]),data1))
+
     items=list(map(lambda x:(x.split(',')),values))
-    splited=list(map(lambda x: dict(x[i].split(':') for i in range (len(x))),items))
-    for i in range(len(splited)):
-        splited[i]=dict(zip(list(splited[i].keys()),list(map(int,splited[i].values()))))
-
-    res = {}
-
-
-    for ele in splited:      
-        key, val = tuple(ele.items())     
-        res[key].append(val) 
-    res
-    return 200
-
+    items_join=[inner for outer in items for inner in outer]
+    splited=tuple(map(lambda x: list(x.split(':')),items_join))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],splited))): 
+        z=[splited[i][:] for i in range(len(splited)) if splited[i][0]==x]
+        w=(x,min(int(z[i][1]) for i in range(len(z))),max(int(z[i][1]) for i in range(len(z))))
+        l.append(w)
+    return(l)
 
 def pregunta_07():
     """
@@ -185,9 +177,14 @@ def pregunta_07():
     ]
 
     """
-    return 606060
-
-
+    values =tuple(map(lambda x:tuple(x[0:2]),data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[1],values))):
+        z=[values[i][:] for i in range(len(values)) if values[i][1]==x]
+        w=(int(z[0][1]),list(map(lambda x:x[0],z)))
+        l.append(w)
+    return(l)
+    
 def pregunta_08():
     """
     Genere una lista de tuplas, donde el primer elemento de cada tupla contiene  el valor
