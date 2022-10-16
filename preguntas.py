@@ -184,7 +184,10 @@ def pregunta_07():
         w=(int(z[0][1]),list(map(lambda x:x[0],z)))
         l.append(w)
     return(l)
+
+
     
+
 def pregunta_08():
     """
     Genere una lista de tuplas, donde el primer elemento de cada tupla contiene  el valor
@@ -207,8 +210,13 @@ def pregunta_08():
     ]
 
     """
-    return 123421412
-
+    values =tuple(map(lambda x:tuple(x[0:2]),data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[1],values))):
+        z=[values[i][:] for i in range(len(values)) if values[i][1]==x]
+        w=(int(z[0][1]),sorted(set(map(lambda x:x[0],z))))
+        l.append(w)
+    return(l)
 
 def pregunta_09():
     """
@@ -230,8 +238,17 @@ def pregunta_09():
     }
 
     """
-    return 1828312838
+    values = list(map(lambda x:(x[4]),data1))
 
+    items=list(map(lambda x:(x.split(',')),values))
+    items_join=[inner for outer in items for inner in outer]
+    splited=tuple(map(lambda x: tuple(x.split(':')),items_join))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],splited))):
+        z=[splited[i][:] for i in range(len(splited)) if splited[i][0]==x]
+        w=(z[0][0],len(list(map(lambda x:(x[1]),z))))
+        l.append(w)
+    return(dict(l))
 
 def pregunta_10():
     """
