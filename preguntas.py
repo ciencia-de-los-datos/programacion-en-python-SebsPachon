@@ -11,18 +11,17 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+with open("data.csv", "r") as file:
+    data= file.readlines()
+
+data1 = [row.replace("\t", ";") for row in data]
+data1 = [row.replace("\n", "") for row in data1]
+data1 = [row.split(";") for row in data1]
 
 
 def pregunta_01():
-    """
-    Retorne la suma de la segunda columna.
-
-    Rta/
-    214
-
-    """
-    return
-
+    row_2=[int(data1[i][1]) for i in range(len(data1))]
+    return(sum(row_2))
 
 def pregunta_02():
     """
@@ -39,7 +38,9 @@ def pregunta_02():
     ]
 
     """
-    return
+    letras=tuple([data1[i][0] for i in range(len(data1))])
+    l=[(i,letras.count(i)) for i in (set(letras))]
+    return(sorted(l))
 
 
 def pregunta_03():
@@ -57,9 +58,14 @@ def pregunta_03():
     ]
 
     """
-    return
+    values = tuple(map(lambda x:x[0:2],data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],data1))): 
+        z=[values[i][:] for i in range(len(data1)) if values[i][0]==x]
+        w=(x,sum(int(z[i][1]) for i in range(len(z))))
+        l.append(w)
 
-
+    return (l)
 def pregunta_04():
     """
     La columna 3 contiene una fecha en formato `YYYY-MM-DD`. Retorne la cantidad de
@@ -82,8 +88,15 @@ def pregunta_04():
     ]
 
     """
-    return
-
+    l=[]
+    fechas=list([data1[i][2] for i in range(len(data1))])
+    values= [fechas.split("-") for fechas in fechas]
+    months=tuple(map(lambda x:x[1],values))
+    key=sorted(set(months))
+    for i in range (len(key)):
+        w=(key[i],months.count(key[i]))
+        l.append(w)
+    return(l)
 
 def pregunta_05():
     """
@@ -100,7 +113,13 @@ def pregunta_05():
     ]
 
     """
-    return
+    values = tuple(map(lambda x:x[0:2],data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],data1))): 
+        z=[values[i][:] for i in range(len(data1)) if values[i][0]==x]
+        w=(x,max(int(z[i][1]) for i in range(len(z))),min(int(z[i][1]) for i in range(len(z))))
+        l.append(w)
+    return (l)
 
 
 def pregunta_06():
@@ -118,15 +137,23 @@ def pregunta_06():
         ("ddd", 0, 9),
         ("eee", 1, 7),
         ("fff", 0, 9),
-        ("ggg", 3, 10),
+           ("ggg", 3, 10),
         ("hhh", 0, 9),
         ("iii", 0, 9),
         ("jjj", 5, 17),
     ]
 
     """
-    return
-
+    values = list(map(lambda x:(x[4]),data1))
+    items=list(map(lambda x:(x.split(',')),values))
+    items_join=[inner for outer in items for inner in outer]
+    splited=tuple(map(lambda x: list(x.split(':')),items_join))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],splited))): 
+        z=[splited[i][:] for i in range(len(splited)) if splited[i][0]==x]
+        w=(x,min(int(z[i][1]) for i in range(len(z))),max(int(z[i][1]) for i in range(len(z))))
+        l.append(w)
+    return(l)
 
 def pregunta_07():
     """
@@ -149,8 +176,16 @@ def pregunta_07():
     ]
 
     """
-    return
+    values =tuple(map(lambda x:tuple(x[0:2]),data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[1],values))):
+        z=[values[i][:] for i in range(len(values)) if values[i][1]==x]
+        w=(int(z[0][1]),list(map(lambda x:x[0],z)))
+        l.append(w)
+    return(l)
 
+
+    
 
 def pregunta_08():
     """
@@ -174,8 +209,13 @@ def pregunta_08():
     ]
 
     """
-    return
-
+    values =tuple(map(lambda x:tuple(x[0:2]),data1))
+    l=[]
+    for x in sorted(set(map(lambda x:x[1],values))):
+        z=[values[i][:] for i in range(len(values)) if values[i][1]==x]
+        w=(int(z[0][1]),sorted(set(map(lambda x:x[0],z))))
+        l.append(w)
+    return(l)
 
 def pregunta_09():
     """
@@ -197,8 +237,17 @@ def pregunta_09():
     }
 
     """
-    return
+    values = list(map(lambda x:(x[4]),data1))
 
+    items=list(map(lambda x:(x.split(',')),values))
+    items_join=[inner for outer in items for inner in outer]
+    splited=tuple(map(lambda x: tuple(x.split(':')),items_join))
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],splited))):
+        z=[splited[i][:] for i in range(len(splited)) if splited[i][0]==x]
+        w=(z[0][0],len(list(map(lambda x:(x[1]),z))))
+        l.append(w)
+    return(dict(l))
 
 def pregunta_10():
     """
@@ -218,8 +267,11 @@ def pregunta_10():
 
 
     """
-    return
-
+    words = tuple(map(lambda x:x[0],data1))
+    element_4=tuple(map(lambda x:len(x[3].split(',')),data1))
+    element_5=tuple(map(lambda x:len(x[4].split(',')),data1))
+    l=[(words[i],element_4[i],element_5[i]) for i in range(len(words))]
+    return (l)
 
 def pregunta_11():
     """
@@ -239,7 +291,17 @@ def pregunta_11():
 
 
     """
-    return
+    letters=list(map(lambda x:x[3].split(','),data1))
+    numbers=list(map(lambda x:int(x[1]),data1))
+    values=[(letters[i],numbers[i])for i in range(len(data1))]
+    unique=sorted(set(x for l in letters for x in l))
+    l=[]
+    for x in unique:
+        z=[values[i][:] for i in range(len (values)) if x in values[i][0]]
+        w=(x,sum((z[i][1]) for i in range(len(z))))
+        l.append(w)
+    return (dict(l))   
+
 
 
 def pregunta_12():
@@ -257,4 +319,18 @@ def pregunta_12():
     }
 
     """
-    return
+    letters=list(map(lambda x:x[0],data1))
+    items=list(map(lambda x:x[4].replace(',',' ').replace(':',' '),data1))
+    numbers=[]
+    for j in range(len(items)):
+        test=items[j]
+        w = [int(i) for i in items[j].split(' ') if i.isdigit()]
+        numbers.append(sum(w)) 
+    final=[(letters[i],numbers[i]) for i in range(len(items))]
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],letters))):
+        z=[final[i][:] for i in range(len(final)) if final[i][0]==x]
+        w=(x,(sum(list(map(lambda x:(x[1]),z)))))
+        l.append(w)    
+    return (dict(l))
+
