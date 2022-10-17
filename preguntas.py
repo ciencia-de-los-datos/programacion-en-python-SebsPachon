@@ -145,7 +145,6 @@ def pregunta_06():
 
     """
     values = list(map(lambda x:(x[4]),data1))
-
     items=list(map(lambda x:(x.split(',')),values))
     items_join=[inner for outer in items for inner in outer]
     splited=tuple(map(lambda x: list(x.split(':')),items_join))
@@ -268,8 +267,11 @@ def pregunta_10():
 
 
     """
-    return 12838921893
-
+    words = tuple(map(lambda x:x[0],data1))
+    element_4=tuple(map(lambda x:len(x[3].split(',')),data1))
+    element_5=tuple(map(lambda x:len(x[4].split(',')),data1))
+    l=[(words[i],element_4[i],element_5[i]) for i in range(len(words))]
+    return (l)
 
 def pregunta_11():
     """
@@ -289,7 +291,17 @@ def pregunta_11():
 
 
     """
-    return 8123812831   
+    letters=list(map(lambda x:x[3].split(','),data1))
+    numbers=list(map(lambda x:int(x[1]),data1))
+    values=[(letters[i],numbers[i])for i in range(len(data1))]
+    unique=sorted(set(x for l in letters for x in l))
+    l=[]
+    for x in unique:
+        z=[values[i][:] for i in range(len (values)) if x in values[i][0]]
+        w=(x,sum((z[i][1]) for i in range(len(z))))
+        l.append(w)
+    return (dict(l))   
+
 
 
 def pregunta_12():
@@ -307,5 +319,18 @@ def pregunta_12():
     }
 
     """
-    return 13912038219038
+    letters=list(map(lambda x:x[0],data1))
+    items=list(map(lambda x:x[4].replace(',',' ').replace(':',' '),data1))
+    numbers=[]
+    for j in range(len(items)):
+        test=items[j]
+        w = [int(i) for i in items[j].split(' ') if i.isdigit()]
+        numbers.append(sum(w)) 
+    final=[(letters[i],numbers[i]) for i in range(len(items))]
+    l=[]
+    for x in sorted(set(map(lambda x:x[0],letters))):
+        z=[final[i][:] for i in range(len(final)) if final[i][0]==x]
+        w=(x,(sum(list(map(lambda x:(x[1]),z)))))
+        l.append(w)    
+    return (dict(l))
 
